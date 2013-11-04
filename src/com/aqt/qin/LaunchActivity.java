@@ -43,10 +43,6 @@ public class LaunchActivity extends FragmentActivity implements
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        //View title = getWindow().findViewById(android.R.id.title);
-        //View titleBar = (View) title.getParent();
-        //titleBar.setBackgroundColor(Color.CYAN);
-		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
