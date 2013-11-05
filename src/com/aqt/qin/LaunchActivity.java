@@ -1,5 +1,7 @@
 package com.aqt.qin;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,15 +17,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.aqt.qin.InteractionFragment.INTERACTION_TYPE;
-import com.aqt.qin.InteractionFragment.InteractionListener;
 import com.aqt.qin.RecognitionFragment.FoundTargetListener;
 import com.aqt.qin.target.TargetActivity;
 import com.aqt.qin.util.Constants;
 import com.aqt.qin.util.DemoTarget;
-import com.aqt.qin.util.DemoTargetManager;
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Scanner;
 import com.moodstocks.android.Scanner.SyncListener;
@@ -48,7 +50,7 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 
 	/**
 	 * A global flag that tracks if the users device is compatible with moodstocks
-	 * api for interpretting images
+	 * api for interpreting images
 	 */
 	private boolean isMoodstockCompatible = false;
 
@@ -89,10 +91,6 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		//View title = getWindow().findViewById(android.R.id.title);
-		//View titleBar = (View) title.getParent();
-		//titleBar.setBackgroundColor(Color.CYAN);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -224,10 +222,10 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 			case 1:
 				return LayoutInflater.from(getActivity()).inflate(R.layout.interaction_view, null);			
 			case 2:
-				TextView rewardView = new TextView(getActivity());
-				rewardView.setGravity(Gravity.CENTER);
-				rewardView.setText("List View containing list of companies user has rewards with");				
-				return rewardView;
+				TextView rewardsView = new TextView(getActivity());
+				rewardsView.setGravity(Gravity.CENTER);
+				rewardsView.setText("List View containing reward programs");				
+				return rewardsView;
 			case 3:
 				TextView collectionView = new TextView(getActivity());
 				collectionView.setGravity(Gravity.CENTER);
