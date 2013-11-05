@@ -1,14 +1,17 @@
 package com.aqt.qin;
 
+import java.util.Locale;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aqt.qin.RecognitionFragment.FoundTargetListener;
+import com.aqt.qin.target.TargetActivity;
+import com.aqt.qin.util.Constants;
+import com.aqt.qin.util.DemoTarget;
+import com.moodstocks.android.MoodstocksError;
+import com.moodstocks.android.Scanner;
+import com.moodstocks.android.Scanner.SyncListener;
+
 public class LaunchActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+ActionBar.TabListener, SyncListener, FoundTargetListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -34,10 +45,40 @@ public class LaunchActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 
+	/**
+	 * A global flag that tracks if the users device is compatible with moodstocks
+	 * api for interpretting images
+	 */
+	private boolean isMoodstockCompatible = false;
+
+	/**
+	 * MoodStock core data structure that can sync with a server. Syncing
+	 * pulls all the images locally, so they can be identified.
+	 */
+	private Scanner mScanner;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// Initialize MoodStocks Api features (if possible)
+		isMoodstockCompatible = Scanner.isCompatible();
+		if (isMoodstockCompatible) {
+			try {
+				this.mScanner = Scanner.get();
+				mScanner.open(this, Constants.MOODSTOCKS_API_KEY, Constants.MOODSTOCKS_API_SECRET);
+				mScanner.sync(this);
+			} catch (MoodstocksError e) {
+				e.log();
+			}
+		} else {
+			Log.w(getClass().getSimpleName(), "Unable to intiialize Moodstock scanners");
+			// TODO: Notify users that there device does not support image recognition
+			// Requirements -
+			//   Android 2.3+
+			//   Arm or x86 CPU
+		}
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -56,12 +97,12 @@ public class LaunchActivity extends FragmentActivity implements
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -73,6 +114,8 @@ public class LaunchActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
+
 	}
 
 	@Override
@@ -106,12 +149,20 @@ public class LaunchActivity extends FragmentActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		private final Fragment mRecFrag = new RecognitionFragment();
+
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
 		public Fragment getItem(int position) {
+
+			// Handle special fragment for showing interaction capabilities.
+			if (position == 0) {
+				return mRecFrag;
+			}
+
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
@@ -132,11 +183,11 @@ public class LaunchActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase();
+				return getString(R.string.title_section1).toUpperCase(Locale.getDefault());
 			case 1:
-				return getString(R.string.title_section2).toUpperCase();
+				return getString(R.string.title_section2).toUpperCase(Locale.getDefault());
 			case 2:
-				return getString(R.string.title_section3).toUpperCase();
+				return getString(R.string.title_section3).toUpperCase(Locale.getDefault());
 			}
 			return null;
 		}
@@ -175,8 +226,49 @@ public class LaunchActivity extends FragmentActivity implements
 			default: // collectionView never reach
 				break;
 			}
-			
+
 			return null;
+		}
+	}
+
+	/////////////////////////////////////////////////////////
+	/////  SyncListener 
+	/////  Pulling image data from Moodstocks
+	/////////////////////////////////////////////////////////
+
+
+	@Override
+	public void onSyncStart() {
+		Log.d("Moodstocks SDK", "Sync will start.");
+	}
+
+	@Override
+	public void onSyncComplete() {
+		try {
+			Log.d("Moodstocks SDK", String.format("Sync succeeded (%d image(s))", mScanner.count()));
+		} catch (MoodstocksError e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onSyncFailed(MoodstocksError e) {
+		Log.d("Moodstocks SDK", "Sync error: " + e.getErrorCode());
+	}
+
+	@Override
+	public void onSyncProgress(int total, int current) {
+		int percent = (int) ((float) current / (float) total * 100);
+		Log.d("Moodstocks SDK", String.format("Sync progressing: %d%%", percent));
+	}
+
+	@Override
+	public void onFoundDemoTarget(DemoTarget target) {
+		// Launch the found activity once we identified the target.
+		if (target != null) {
+			Intent i = new Intent(this, TargetActivity.class);
+			i.putExtra(TargetActivity.ARG_IMAGE_NAME, target.getUniqueName());
+			startActivity(i);
 		}
 	}
 
