@@ -17,9 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aqt.qin.RecognitionFragment.FoundTargetListener;
@@ -50,7 +47,7 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 
 	/**
 	 * A global flag that tracks if the users device is compatible with moodstocks
-	 * api for interpreting images
+	 * api for interpretting images
 	 */
 	private boolean isMoodstockCompatible = false;
 
@@ -59,11 +56,6 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 	 * pulls all the images locally, so they can be identified.
 	 */
 	private Scanner mScanner;
-
-	/**
-	 * Reference to this class.
-	 */
-	private final FragmentActivity THIS = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
