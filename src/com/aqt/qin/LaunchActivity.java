@@ -1,5 +1,7 @@
 package com.aqt.qin;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
@@ -14,7 +16,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.aqt.qin.RecognitionFragment.FoundTargetListener;
+import com.aqt.qin.target.TargetActivity;
+import com.aqt.qin.util.Constants;
+import com.aqt.qin.util.DemoTarget;
+import com.moodstocks.android.MoodstocksError;
+import com.moodstocks.android.Scanner;
+import com.moodstocks.android.Scanner.SyncListener;
 
 public class LaunchActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -33,6 +46,23 @@ public class LaunchActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+
+	/**
+	 * A global flag that tracks if the users device is compatible with moodstocks
+	 * api for interpreting images
+	 */
+	private boolean isMoodstockCompatible = false;
+
+	/**
+	 * MoodStock core data structure that can sync with a server. Syncing
+	 * pulls all the images locally, so they can be identified.
+	 */
+	private Scanner mScanner;
+
+	/**
+	 * Reference to this class.
+	 */
+	private final FragmentActivity THIS = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -163,10 +193,10 @@ public class LaunchActivity extends FragmentActivity implements
 			case 1:
 				return LayoutInflater.from(getActivity()).inflate(R.layout.interaction_view, null);			
 			case 2:
-				TextView rewardView = new TextView(getActivity());
-				rewardView.setGravity(Gravity.CENTER);
-				rewardView.setText("List View containing list of companies user has rewards with");				
-				return rewardView;
+				TextView rewardsView = new TextView(getActivity());
+				rewardsView.setGravity(Gravity.CENTER);
+				rewardsView.setText("List View containing reward programs");				
+				return rewardsView;
 			case 3:
 				TextView collectionView = new TextView(getActivity());
 				collectionView.setGravity(Gravity.CENTER);
