@@ -11,6 +11,8 @@
     <string name="title_section2">Rewards</string>
     <string name="title_section3">Collection</string>
     <string name="menu_settings">Settings</string>
-	
+    <color name="primary">#C92220</color>
+    <color name="secondary">#B51F1C</color>
+    <color name="tertiary">#FF6440</color>
     
 </resources>
