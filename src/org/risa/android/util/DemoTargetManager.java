@@ -24,7 +24,6 @@ public class DemoTargetManager {
 		String versace_uid = "versace_ad_1";
 		// TODO: Add content to info
 		mTargets.add(new DemoTarget(versace_uid, R.raw.versace_ad));
-		
 		// TODO add more targets.
 	}
 	
