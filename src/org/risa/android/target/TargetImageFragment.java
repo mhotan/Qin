@@ -1,4 +1,6 @@
-package com.aqt.qin.target;
+package org.risa.android.target;
+
+import org.risa.android.data.DemoTarget;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.aqt.qin.R;
-import com.aqt.qin.util.DemoTarget;
 
 /**
  * Fragment that handles the presentation of a target image.
@@ -54,8 +55,7 @@ public class TargetImageFragment extends Fragment {
 	public void onActivityCreated (Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		DemoTarget target = mListener.getTarget();
-		mImageContainer.addView(new TargetImageView(
-				target.getResourceID(), target.getInfo(), getActivity()));
+		mImageContainer.addView(new TargetImageView(target, getActivity()));
 	}
 
 	/**

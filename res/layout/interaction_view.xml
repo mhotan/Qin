@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/videoiconCD"
-        android:src="@drawable/icon_video" />title_section1title_section1
+        android:src="@drawable/icon_video" />
 
     <ImageButton
         android:id="@+id/nfciconButton"

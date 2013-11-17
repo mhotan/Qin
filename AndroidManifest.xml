@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.aqt.qin.LaunchActivity"
+            android:name="org.risa.android.LaunchActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name="RecognitionActivity"></activity>
-        <activity android:name=".target.TargetActivity"></activity>
+        <activity android:name="org.risa.android.target.TargetActivity"></activity>
     </application>
 
 </manifest>

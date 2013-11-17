@@ -1,6 +1,11 @@
-package com.aqt.qin;
+package org.risa.android;
 
 import java.util.Locale;
+
+import org.risa.android.RecognitionFragment.FoundTargetListener;
+import org.risa.android.data.DemoTarget;
+import org.risa.android.target.TargetActivity;
+import org.risa.android.util.Constants;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -19,10 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aqt.qin.RecognitionFragment.FoundTargetListener;
-import com.aqt.qin.target.TargetActivity;
-import com.aqt.qin.util.Constants;
-import com.aqt.qin.util.DemoTarget;
+import com.aqt.qin.R;
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Scanner;
 import com.moodstocks.android.Scanner.SyncListener;
@@ -96,8 +98,7 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
@@ -149,6 +150,9 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		/**
+		 * Single Recognition fragment for this instance of sectionspager adapter.
+		 */
 		private final Fragment mRecFrag = new RecognitionFragment();
 
 		public SectionsPagerAdapter(FragmentManager fm) {
@@ -267,7 +271,7 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 		// Launch the found activity once we identified the target.
 		if (target != null) {
 			Intent i = new Intent(this, TargetActivity.class);
-			i.putExtra(TargetActivity.ARG_IMAGE_NAME, target.getUniqueName());
+			i.putExtra(TargetActivity.ARG_IMAGE_NAME, target.getUID());
 			startActivity(i);
 		}
 	}

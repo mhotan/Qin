@@ -1,4 +1,4 @@
-package com.aqt.qin.util;
+package org.risa.android.util;
 
 public class Constants {
 
