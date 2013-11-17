@@ -1,4 +1,6 @@
-package com.aqt.qin;
+package org.risa.android;
+
+import com.aqt.qin.R;
 
 import android.app.Activity;
 import android.os.Bundle;

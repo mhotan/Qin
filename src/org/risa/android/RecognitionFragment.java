@@ -1,4 +1,9 @@
-package com.aqt.qin;
+package org.risa.android;
+
+import org.risa.android.data.DemoTarget;
+import org.risa.android.target.TargetActivity;
+import org.risa.android.target.TargetImageFragment.TargetImageListener;
+import org.risa.android.util.DemoTargetManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aqt.qin.target.TargetActivity;
-import com.aqt.qin.target.TargetImageFragment.TargetImageListener;
-import com.aqt.qin.util.DemoTarget;
-import com.aqt.qin.util.DemoTargetManager;
+import com.aqt.qin.R;
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Result;
 import com.moodstocks.android.ScannerSession;

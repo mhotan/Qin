@@ -1,13 +1,14 @@
-package com.aqt.qin.target;
+package org.risa.android.target;
+
+import org.risa.android.data.DemoTarget;
+import org.risa.android.target.TargetImageFragment.TargetImageListener;
+import org.risa.android.util.DemoTargetManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.aqt.qin.R;
-import com.aqt.qin.target.TargetImageFragment.TargetImageListener;
-import com.aqt.qin.util.DemoTarget;
-import com.aqt.qin.util.DemoTargetManager;
 
 /**
  * This manages the views that present the target to the users.

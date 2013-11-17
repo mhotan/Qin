@@ -1,10 +1,11 @@
-package com.aqt.qin.util;
+package org.risa.android.util;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import org.risa.android.data.DemoTarget;
+
 import com.aqt.qin.R;
-import com.aqt.qin.TargetInformation;
 
 /**
  * Class that handles the storage of demo targets.
@@ -21,9 +22,8 @@ public class DemoTargetManager {
 	static {
 		// Add the Versace advertisement.
 		String versace_uid = "versace_ad_1";
-		TargetInformation info = new TargetInformation(versace_uid);
 		// TODO: Add content to info
-		mTargets.add(new DemoTarget(info, R.raw.versace_ad));
+		mTargets.add(new DemoTarget(versace_uid, R.raw.versace_ad));
 		
 		// TODO add more targets.
 	}
@@ -36,7 +36,7 @@ public class DemoTargetManager {
 	 */
 	public static DemoTarget getDemoTarget(String uniqueId) {
 		for (DemoTarget target : mTargets)
-			if (target.getUniqueName().equals(uniqueId))
+			if (target.getUID().equals(uniqueId))
 				return target;
 		return null;
 	}

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/target_image_fragment"
-        android:name="com.aqt.qin.target.TargetImageFragment"
+        android:name="org.risa.android.target.TargetImageFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"

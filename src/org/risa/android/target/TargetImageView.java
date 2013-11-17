@@ -1,10 +1,11 @@
-package com.aqt.qin.target;
+package org.risa.android.target;
+
+import org.risa.android.data.Target;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.widget.ImageView;
 
-import com.aqt.qin.TargetInformation;
 
 /**
  * ImageView that presents the target to the user.  Allows the user to select content of the image. 
@@ -13,7 +14,10 @@ import com.aqt.qin.TargetInformation;
  */
 public class TargetImageView extends ImageView {
 
-	private final TargetInformation mInfo;
+	/**
+	 * The target to be drawn on this ImageView.
+	 */
+	private final Target mTarget;
 	
 	/**
 	 * Creates a target image view from a resource id.
@@ -22,12 +26,12 @@ public class TargetImageView extends ImageView {
 	 * @param context Context to create view with
 	 * @param attrs attributes of the image
 	 */
-	public TargetImageView(int id, TargetInformation info, Context context) {
+	public TargetImageView(Target target, Context context) {
 		super(context);
-		if (id < 0) 
-			throw new IllegalArgumentException("Illegal resource id for image: " + id);
-		super.setImageResource(id);
-		mInfo = info;
+		mTarget = target;
+		
+		// Load the image on this view.
+		mTarget.loadImage(this);
 	}
 	
 	@Override
