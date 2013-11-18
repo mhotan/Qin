@@ -44,7 +44,7 @@ public class TargetActivity extends FragmentActivity implements TargetImageListe
 		} else {
 			imageName = i.getStringExtra(ARG_IMAGE_NAME);
 		}
-		mTarget = DemoTargetManager.getDemoTarget(imageName);
+		mTarget = DemoTargetManager.getInstance(getApplicationContext()).getDemoTarget(imageName);
 		if (mTarget == null) 
 			throw new IllegalArgumentException("Unable to find target named " + imageName);
 	}
