@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Qin</string>
+    <string name="app_name">Mine</string>
     <string name="action_settings">Settings</string>
     <string name="videoiconCD">Video Recorder</string>
     <string name="qriconCD">QR Code Scanner</string>
     <string name="nfciconCD">NFC Scanner</string>
     <string name="menu_help">Help</string>
     <string name="title_section1">Interact</string>
-    <string name="title_section2">Rewards</string>
+    <string name="title_section2">Home</string>
     <string name="title_section3">Collection</string>
     <string name="menu_settings">Settings</string>
     <color name="primary">#C92220</color>
     <color name="secondary">#B51F1C</color>
-    <color name="tertiary">#FF6440</color>
+    <color name="background">#FFFFFF</color>
     
 </resources>
