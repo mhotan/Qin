@@ -230,5 +230,4 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 			startActivity(i);
 		}
 	}
-
 }
