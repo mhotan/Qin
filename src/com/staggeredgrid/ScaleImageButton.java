@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 /**
@@ -18,21 +18,21 @@ import android.widget.RelativeLayout;
  * @author Maurycy Wojtowicz
  *
  */
-public class ScaleImageView extends ImageView {
+public class ScaleImageButton extends ImageButton {
 	private ImageChangeListener imageChangeListener;
 	private boolean scaleToWidth = false; // this flag determines if should measure height manually dependent of width
 
-	public ScaleImageView(Context context) {
+	public ScaleImageButton(Context context) {
 		super(context);
 		init();
 	}
 
-	public ScaleImageView(Context context, AttributeSet attrs, int defStyle) {
+	public ScaleImageButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 
-	public ScaleImageView(Context context, AttributeSet attrs) {
+	public ScaleImageButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}

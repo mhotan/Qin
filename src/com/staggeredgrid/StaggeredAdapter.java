@@ -28,15 +28,21 @@ public class StaggeredAdapter extends ArrayAdapter<String> {
 
 		if (convertView == null) {
 			LayoutInflater layoutInflator = LayoutInflater.from(getContext());
-			convertView = layoutInflator.inflate(R.layout.row_staggered_demo,
+			convertView = layoutInflator.inflate(R.layout.row_staggered_view,
 					null);
 			holder = new ViewHolder();
-			holder.imageView = (ScaleImageView) convertView.findViewById(R.id.imageView1);
+			holder.imageButton = (ScaleImageButton) convertView.findViewById(R.id.imageView1);
 			convertView.setTag(holder);
 		}
 
 		holder = (ViewHolder) convertView.getTag();
+		int imgId = getImageId(position);
+		holder.imageButton.setImageResource(imgId);
 		
+		return convertView;
+	}
+
+	private int getImageId(int position) {
 		int imgId;
 		switch (position) {
 		case 0:
@@ -70,11 +76,10 @@ public class StaggeredAdapter extends ArrayAdapter<String> {
 			imgId = R.drawable.newsfeed10;
 		}
 		
-		holder.imageView.setImageResource(imgId);
-		return convertView;
+		return imgId;
 	}
 
 	static class ViewHolder {
-		ScaleImageView imageView;
+		ScaleImageButton imageButton;
 	}
 }

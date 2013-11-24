@@ -14,5 +14,6 @@
     <color name="primary">#C92220</color>
     <color name="secondary">#B51F1C</color>
     <color name="background">#FFFFFF</color>
+    <color name="buttonhighlight">#22909090</color>
     
 </resources>
