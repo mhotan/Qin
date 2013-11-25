@@ -1,10 +1,16 @@
 package org.risa.android.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.risa.android.data.DemoTarget;
-import org.risa.android.data.FocalPoint;
+import org.risa.android.data.Item;
+import org.risa.android.data.ItemPoint;
+import org.risa.android.data.PurchaseDetails;
+import org.risa.android.data.RectangularDimension;
+import org.risa.android.data.Vendor;
 
 import android.content.Context;
 
@@ -25,6 +31,7 @@ public class DemoTargetManager {
 
 	private static DemoTargetManager mInstance;
 
+	private static List<ImageSource> mPenguinImages;
 
 	private DemoTargetManager(Context ctx) {
 		mTargets = new HashSet<DemoTarget>();
@@ -33,11 +40,10 @@ public class DemoTargetManager {
 		String versace_uid = "versace_ad_1";
 		
 		// TODO: Add content to info
-		DemoTarget t = new DemoTarget(versace_uid, ctx.getResources(), R.raw.versace_ad);
-		t.addInteractable(new FocalPoint(t.getDimensions(), 400, 372));
-		t.addInteractable(new FocalPoint(t.getDimensions(), 69, 575));
-		t.addInteractable(new FocalPoint(t.getDimensions(), 81, 191));
-		t.addInteractable(new FocalPoint(t.getDimensions(), 354, 144));
+		DemoTarget t = new DemoTarget("Versace", versace_uid, ctx.getResources(), R.raw.versace_ad);
+		Item item = getItem("Dress", t.getDimensions(), 400, 372, 49.99f);
+		addPenguinImages(item);
+		t.addItem(item);
 		mTargets.add(t);
 		
 		// TODO add more targets.
@@ -61,6 +67,36 @@ public class DemoTargetManager {
 			if (target.getUID().equals(uniqueId))
 				return target;
 		return null;
+	}
+	
+	
+	private static Item getItem(String itemName, 
+			RectangularDimension targetDimension, 
+			int x, int y,
+			float lowestCost) {
+		ItemPoint item = new ItemPoint(itemName, targetDimension, x, y);
+		float[] prices = new float[3];
+		for (int i = 0; i < prices.length; ++i) {
+			prices[i] = (float) (lowestCost + Math.random() * 20.0f);
+		}
+		
+		item.addPurchaseDetails(new PurchaseDetails(Vendor.MACYS, prices[0], Vendor.MACYS.getURL()));
+		item.addPurchaseDetails(new PurchaseDetails(Vendor.NORDSTROMS, prices[1], Vendor.NORDSTROMS.getURL()));
+		item.addPurchaseDetails(new PurchaseDetails(Vendor.AMAZON, prices[2], Vendor.AMAZON.getURL()));
+		
+		return item;
+	}
+	
+	private static void addPenguinImages(Item item) {
+		if (mPenguinImages == null) {
+			mPenguinImages = new ArrayList<ImageSource>();
+			mPenguinImages.add(new ResourceImageLoader(R.raw.penguin1));
+			mPenguinImages.add(new ResourceImageLoader(R.raw.penguin2));
+			mPenguinImages.add(new ResourceImageLoader(R.raw.penguin3));
+			mPenguinImages.add(new ResourceImageLoader(R.raw.penguin4));
+		}
+		for (ImageSource s: mPenguinImages) 
+			item.addImage(s);
 	}
 
 }

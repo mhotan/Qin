@@ -21,6 +21,9 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
+/**
+ * A Panel view that creates a sliding up feature
+ */
 public class SlidingUpPanelLayout extends ViewGroup {
     
     private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();

@@ -62,7 +62,8 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 
 		// set session options
 		mSession.setOptions(ScanOptions);
-
+		mSession.noPartialMatching = true;
+		
 		// Text view that shows result.
 		mResultTextView = (TextView) view.findViewById(R.id.scan_result);
 		mResultTextView.setVisibility(View.INVISIBLE);

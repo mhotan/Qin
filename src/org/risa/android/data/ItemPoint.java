@@ -1,8 +1,5 @@
 package org.risa.android.data;
 
-import org.risa.android.util.ImageUtil;
-
-import android.R.color;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +7,7 @@ import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 
 import com.aqt.qin.R;
 
@@ -18,7 +16,7 @@ import com.aqt.qin.R;
  * 
  * @author Michael Hotan, michael.hotan@gmail.com
  */
-public class FocalPoint implements Interactable {
+public class ItemPoint extends Item {
 
 	/**
 	 * Center point of this point on the target image.
@@ -29,41 +27,43 @@ public class FocalPoint implements Interactable {
 	 * Image that represents focal point
 	 */
 	private Bitmap mImage;
-	
+
 	/**
 	 * Paint class that is in charge of drawing the image
 	 */
 	private final Paint mPaint;
-	
+
 	/**
 	 * Original dimensions of the target image this point is on. 
 	 */
 	private final RectangularDimension mOrigDimension;
-	
+
 	/**
 	 * The quandrant where this focal plane lies in.
 	 */
 	private final Quandrant mQuandrant;
-	
+
 	/**
 	 * Focal point set at a final deterministic location.
 	 * 
+	 * @param name Name of this item.
 	 * @param targetDimension Dimensions of the target 
 	 * @param xCoord X Coordinate of the this focal points
 	 * @param yCoord Y coordinate of the this focal points
 	 */
-	public FocalPoint(RectangularDimension targetDimension, int xCoord, int yCoord) {
+	public ItemPoint(String name, RectangularDimension targetDimension, int xCoord, int yCoord) {
+		super(name);
 		if (xCoord < 0) throw new IllegalArgumentException("Can't have negative x coordinate");
 		if (yCoord < 0) throw new IllegalArgumentException("Can't have negative y coordinate");
 		mCoordinate = new Point(xCoord, yCoord);
-		
+
 		// Paint in charge of drawing the focal point
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
-		
+
 		// The dimension of the target image this point is on
 		mOrigDimension = targetDimension;
-		
+
 		if (xCoord <= targetDimension.getMidpoint().x && yCoord < targetDimension.getMidpoint().y) {
 			// Quadrant 1
 			mQuandrant = Quandrant.ONE;
@@ -78,7 +78,7 @@ public class FocalPoint implements Interactable {
 			mQuandrant = Quandrant.FOUR;
 		}
 	}
-	
+
 	/**
 	 * The Focal point is determined at the time the target is annotated.
 	 * Therefore the points will always correspond to the raw location of the focal
@@ -99,7 +99,6 @@ public class FocalPoint implements Interactable {
 	private Bitmap getImage(Resources res) {
 		if (mImage == null) {
 			mImage = BitmapFactory.decodeResource(res, R.raw.focal_point);
-//			mImage = ImageUtil.highlightImage(mImage);
 		}
 		return mImage;
 	}
@@ -114,37 +113,45 @@ public class FocalPoint implements Interactable {
 	protected RectangularDimension getOrigTargetDimensions() {
 		return mOrigDimension;
 	}
-	
+
 	@Override
 	public void onDrawSelf(Resources res, Canvas canvas) {
+
+		// Obtain a reference to the image to draw. 
+		Bitmap image = getImage(res);		
+
+		// Get the boundaries of the Focal Point Image
+		Rect bounds = getBounds(res, canvas);
 		
+		// Draw the focal point on the the scaled image.
+		canvas.drawBitmap(image, bounds.left, bounds.top, mPaint);
+	}
+
+	@Override
+	public Rect getBounds(Resources res, Canvas canvas) {
 		// Obtain a reference to the image to draw. 
 		Bitmap image = getImage(res);
-		
-		canvas.drawColor(color.black);
+
+		int canvasWidth = canvas.getWidth();
+		int canvasHeight = canvas.getHeight();
+		int imgWidth = image.getWidth();
+		int imgHeight = image.getHeight();
 		
 		// Calculate the scaled point of myself.
-		RectangularDimension scaledDimension = new RectangularDimension(canvas.getWidth(), canvas.getHeight());
+		RectangularDimension scaledDimension = new RectangularDimension(canvasWidth, canvasHeight);
 		float scale = mOrigDimension.getScale(scaledDimension);
 		int scaledX, scaledY;
-		
-//		scaledX = (int) ((scaledDimension.getWidth() - mOrigDimension.getWidth() * scale) / 2) + Math.round(scale * mCoordinate.x);
-//		scaledY = (int) ((scaledDimension.getHeight() - mOrigDimension.getHeight() * scale) / 2) + Math.round(scale * mCoordinate.y);
-		
+
 		// Assign the scaled X Coordinate based on which quandrant we are looking at.
 		switch (mQuandrant) {
 		case ONE:
 		case FOUR:
-			int xScaleMid = scaledDimension.getMidpoint().x;
-			int xOrigMid = mOrigDimension.getMidpoint().x;
-			int origDistFromMid = xOrigMid - mCoordinate.x;
-			float scaledDistant = origDistFromMid * scale;
-			scaledX = (int) (xScaleMid - scaledDistant);
+			scaledX = (int) (scaledDimension.getMidpoint().x - ((mOrigDimension.getMidpoint().x - mCoordinate.x) * scale));
 			break;
 		default:
 			scaledX = (int) (scaledDimension.getMidpoint().x + (mCoordinate.x - mOrigDimension.getMidpoint().x) * scale);
 		}
-		
+
 		// Assign the Scaled Y Coordinate based on which quandrant the focal point is in.
 		switch (mQuandrant) {
 		case ONE:
@@ -155,9 +162,18 @@ public class FocalPoint implements Interactable {
 			scaledY = (int) (scaledDimension.getMidpoint().y + (mCoordinate.y - mOrigDimension.getMidpoint().y) * scale);
 		}
 		
-		// Draw the focal point on the the scaled image.
-		canvas.drawBitmap(image, Math.max(0, Math.min(canvas.getWidth() - image.getWidth(), scaledX - image.getWidth() / 2)), 
-				Math.min(canvas.getHeight() - image.getHeight(), scaledY - image.getHeight() / 2), mPaint);
+		// Make sure the combination of the center point and  boundaries of the image fits within the bounds
+		// of the image.
+		int left = Math.max(0, Math.min(canvasWidth - imgWidth, scaledX - imgWidth / 2));
+		int top = Math.min(canvasHeight - imgHeight, scaledY - imgHeight / 2);
+		return new Rect(left, top, left + imgWidth, top + imgHeight);
 	}
 	
+	@Override
+	public String toString() {
+		return "{ X: " + mCoordinate.x + ", Y: " + mCoordinate.y + " }";
+	}
+	
+	
+
 }

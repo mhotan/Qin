@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--  -->
+    <style name="TitleText" parent="@android:style/TextAppearance.DeviceDefault.Large">
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleText.White">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/primary</item>
+    </style>
+    
+    <style name="SubTitle" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:padding">5dip</item>
+    </style>
+    
+    <style name="SubTitle.White">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/primary</item>
+    </style>
+    
+    <style name="Content" parent="@android:style/TextAppearance.DeviceDefault.Small">
+        <item name="android:typeface">normal</item>
+        <item name="android:padding">3dip</item>
+        <item name="android:textSize">15sp</item>
+        
+    </style>
+</resources>

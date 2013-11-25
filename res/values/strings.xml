@@ -14,5 +14,7 @@
     <color name="primary">#C92220</color>
     <color name="secondary">#B51F1C</color>
     <color name="tertiary">#FF6440</color>
+    <string name="label_lowest_cost">As low as %1$s!</string>
+    <string name="label_num_winners">%1$d winners today!</string>
     
 </resources>
