@@ -1,14 +1,22 @@
 package org.risa.android.target;
 
-import org.risa.android.data.DemoTarget;
+import org.risa.android.data.Interactable;
+import org.risa.android.data.Target;
+import org.risa.android.target.TargetTouchListener.OnInteractionOccurredListener;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import android.app.Activity;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.aqt.qin.R;
 
@@ -19,17 +27,25 @@ import com.aqt.qin.R;
  * 
  * @author Michael Hotan, michael.hotan@gmail.com
  */
-public class TargetImageFragment extends Fragment {
+public class TargetImageFragment extends Fragment implements 
+OnInteractionOccurredListener {
 
+	
 	/**
 	 * Listening activity or object using this fragment.
 	 */
 	private TargetImageListener mListener;
 
-	private DemoTarget target;
-
+	/**
+	 * Container that holds Image View
+	 */
 	private FrameLayout mImageContainer;
 
+	/**
+	 * PhotoView attacher that controls view manipulation.
+	 */
+	private PhotoViewAttacher mAttacher;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -54,8 +70,11 @@ public class TargetImageFragment extends Fragment {
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		DemoTarget target = mListener.getTarget();
-		mImageContainer.addView(new TargetImageView(target, getActivity()));
+		Target target = mListener.getTarget();
+		
+		ImageView imgView = new TargetImageView(target, getActivity(), this);
+		mImageContainer.addView(imgView);
+		
 	}
 
 	/**
@@ -65,18 +84,24 @@ public class TargetImageFragment extends Fragment {
 	 * 
 	 * @author Michael Hotan, michael.hotan@gmail.com
 	 */
-	public interface TargetImageListener {
-
-		/**
-		 * Notifies listener that context within the image is selected 
-		 */
-		public void onContentSelected(/*Place content data structure in here*/);
+	public interface TargetImageListener extends OnInteractionOccurredListener {
 
 		/**
 		 * @return Target to present within this fragment.
 		 */
-		public DemoTarget getTarget();
+		public Target getTarget();
+		
+	}
 
-	} 
+	@Override
+	public void onInteractableSelected(Interactable interactable) {
+		mListener.onInteractableSelected(interactable);
+	}
+
+	@Override
+	public void onClearSelected() {
+		mListener.onClearSelected();
+	}
+
 
 }

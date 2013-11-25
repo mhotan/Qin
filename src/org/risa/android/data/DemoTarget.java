@@ -14,7 +14,10 @@ import android.widget.ImageView;
 public class DemoTarget extends Target {
 
 	/**
-	 * The Resource ID of this demo target
+	 * The Resource ID of this demo target.
+	 * <b> Because this is class is strictly used for Demos
+	 *  we can store a small finite amount target images within the application
+	 *  itself. 
 	 */
 	private final int mResourceID;
 
