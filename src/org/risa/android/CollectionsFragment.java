@@ -28,6 +28,8 @@ public class CollectionsFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_collections, container, false);
 	    GridView gridView = (GridView)view.findViewById(R.id.gridview);
+	    gridView.setDrawSelectorOnTop(true);
+	    
 		((GridView) gridView).setAdapter(new CustomGridViewAdapter(getActivity()));
 		
 		int currentOrientation = getResources().getConfiguration().orientation;
@@ -50,11 +52,12 @@ public class CollectionsFragment extends Fragment {
 	    public CustomGridViewAdapter(Context context) {
 	        inflater = LayoutInflater.from(context);
 
-	        items.add(new Item("Recent Scans",       R.drawable.collections1));
-	        items.add(new Item("Favorites",   R.drawable.collections2));
+	        items.add(new Item("Recent Scans", R.drawable.collections1));
+	        items.add(new Item("Favorites", R.drawable.collections2));
 	        items.add(new Item("cool hats", R.drawable.collections3));
-	        items.add(new Item("#falltrends",      R.drawable.collections4));
-	        items.add(new Item("New Collection",     R.drawable.plus_icon));
+	        items.add(new Item("#falltrends", R.drawable.collections4));
+	        items.add(new Item("nordstroms", R.drawable.collections5));
+	        items.add(new Item("New Collection", R.drawable.plus_icon));
 	    }
 
 	    @Override
@@ -85,12 +88,15 @@ public class CollectionsFragment extends Fragment {
 	        }
 
 	        picture = (ImageView)v.getTag(R.id.picture);
+
 	        name = (TextView)v.getTag(R.id.text);
 
 	        Item item = (Item)getItem(i);
-
-	        picture.setImageResource(item.drawableId);
 	        name.setText(item.name);
+	        
+	        picture.setImageResource(item.drawableId);
+	        picture.setBackgroundResource(R.drawable.selector);
+	        
 
 	        return v;
 	    }

@@ -15,5 +15,6 @@
     <color name="secondary">#B51F1C</color>
     <color name="background">#FFFFFF</color>
     <color name="buttonhighlight">#22909090</color>
+    <color name="transparent_border">#22000000</color>
     
 </resources>

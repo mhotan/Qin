@@ -1,10 +1,14 @@
 package com.staggeredgrid;
 
+import com.aqt.qin.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
+import android.view.View.MeasureSpec;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 /**
@@ -18,21 +22,21 @@ import android.widget.RelativeLayout;
  * @author Maurycy Wojtowicz
  *
  */
-public class ScaleImageButton extends ImageButton {
+public class ScaleImageView extends ImageView {
 	private ImageChangeListener imageChangeListener;
 	private boolean scaleToWidth = false; // this flag determines if should measure height manually dependent of width
-
-	public ScaleImageButton(Context context) {
+	
+	public ScaleImageView(Context context) {
 		super(context);
 		init();
 	}
 
-	public ScaleImageButton(Context context, AttributeSet attrs, int defStyle) {
+	public ScaleImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 
-	public ScaleImageButton(Context context, AttributeSet attrs) {
+	public ScaleImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}

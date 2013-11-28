@@ -3,12 +3,13 @@ package org.risa.android;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 import com.aqt.qin.R;
 import com.origamilabs.library.views.StaggeredGridView;
@@ -22,11 +23,10 @@ import com.staggeredgrid.StaggeredAdapter;
 public class NewsFeedFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {	
-		RelativeLayout containerLayout = new RelativeLayout(getActivity());
-		
+			Bundle savedInstanceState) {			
 		StaggeredGridView gridView = new StaggeredGridView(getActivity());
-		containerLayout.addView(gridView);
+		gridView.setDrawSelectorOnTop(true);
+		gridView.setSelector(R.drawable.selector);
 		
 		int margin = getResources().getDimensionPixelSize(R.dimen.activity_newsfeed_margin);
 		gridView.setItemMargin(margin); // set the GridView margin
@@ -48,16 +48,10 @@ public class NewsFeedFragment extends Fragment {
 		for (int i = 0; i < imgNames.length; i++)
 			imgNames[i] = "misc";
 		
-		StaggeredAdapter adapter = new StaggeredAdapter(getActivity(), R.id.imageView1, imgNames);
+		StaggeredAdapter adapter = new StaggeredAdapter(getActivity(), R.id.image, imgNames);
 		gridView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 		
-		ProgressBar progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyle);
-		LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-		lp.addRule(RelativeLayout.ALIGN_BOTTOM);
-		containerLayout.addView(progressBar, lp);
-		
-		return containerLayout;
+		return gridView;
 	}
 }
