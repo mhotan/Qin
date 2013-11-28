@@ -17,12 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.aqt.qin.R;
 import com.moodstocks.android.MoodstocksError;
@@ -150,10 +145,10 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		/**
-		 * Single Recognition fragment for this instance of sectionspager adapter.
-		 */
+		// Each Fragment represents the view for the three application tabs
 		private final Fragment mRecFrag = new RecognitionFragment();
+		private final Fragment mNewsFeedFrag = new NewsFeedFragment();
+		private final Fragment mCollectionsFrag = new CollectionsFragment();
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -163,18 +158,15 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 		public Fragment getItem(int position) {
 
 			// Handle special fragment for showing interaction capabilities.
-			if (position == 0) {
-				return mRecFrag;
+			switch (position)
+			{
+				case 0:
+					return mRecFrag;
+				case 1:
+					return mNewsFeedFrag;
+				default:
+					return mCollectionsFrag;
 			}
-
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
-			return fragment;
 		}
 
 		@Override
@@ -197,43 +189,6 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {		
-			switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-			case 1:
-				return LayoutInflater.from(getActivity()).inflate(R.layout.interaction_view, null);			
-			case 2:
-				TextView rewardsView = new TextView(getActivity());
-				rewardsView.setGravity(Gravity.CENTER);
-				rewardsView.setText("List View containing reward programs");				
-				return rewardsView;
-			case 3:
-				TextView collectionView = new TextView(getActivity());
-				collectionView.setGravity(Gravity.CENTER);
-				collectionView.setText("List View containing previous ad interactions");				
-				return collectionView;
-			default: // collectionView never reach
-				break;
-			}
-
-			return null;
-		}
-	}
 
 	/////////////////////////////////////////////////////////
 	/////  SyncListener 
@@ -275,5 +230,4 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 			startActivity(i);
 		}
 	}
-
 }
