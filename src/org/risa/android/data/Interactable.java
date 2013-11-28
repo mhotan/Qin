@@ -30,6 +30,6 @@ public interface Interactable {
 	 * @return The Boundary to draw the resources.
 	 */
 	public Rect getBounds(Resources res, Canvas canvas);
-
+	
 	
 }

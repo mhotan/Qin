@@ -80,6 +80,15 @@ public abstract class Target {
 	/**
 	 * Get all the interactable components within this Target.
 	 * 
+	 * @return
+	 */
+	public String getReadableIdentifier() {
+		return mReadableString;
+	}
+	
+	/**
+	 * Get all the interactable components within this Target.
+	 * 
 	 * @return All the interactable objects within the target
 	 */
 	public List<Item> getItems() {

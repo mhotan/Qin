@@ -18,6 +18,8 @@ public abstract class Content implements Parcelable {
 	 */
 	private String mName;
 	
+	
+	
 	/**
 	 * Set the name associated with this content.
 	 * 
@@ -37,6 +39,7 @@ public abstract class Content implements Parcelable {
 	public String getName() {
 		return mName;
 	}
+	
 	
 	@Override
 	public int describeContents() {
