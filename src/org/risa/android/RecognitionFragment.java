@@ -1,12 +1,9 @@
 package org.risa.android;
 
 import org.risa.android.data.DemoTarget;
-import org.risa.android.target.TargetActivity;
-import org.risa.android.target.TargetImageFragment.TargetImageListener;
 import org.risa.android.util.DemoTargetManager;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -65,7 +62,8 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 
 		// set session options
 		mSession.setOptions(ScanOptions);
-
+		mSession.noPartialMatching = true;
+		
 		// Text view that shows result.
 		mResultTextView = (TextView) view.findViewById(R.id.scan_result);
 		mResultTextView.setVisibility(View.INVISIBLE);
@@ -115,7 +113,8 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 			mResultTextView.setText(String.format("Scan result: %s", uniqueName));
 			mResultTextView.setVisibility(View.VISIBLE);
 			
-			DemoTarget target = DemoTargetManager.getDemoTarget(uniqueName);
+			DemoTarget target = DemoTargetManager.getInstance(
+					getActivity().getApplicationContext()).getDemoTarget(uniqueName);
 			if (target != null) {
 				// Notify the activity
 				mFoundListener.onFoundDemoTarget(target);
