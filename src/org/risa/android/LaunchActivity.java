@@ -146,9 +146,9 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		// Each Fragment represents the view for the three application tabs
-		private final Fragment mRecFrag = new RecognitionFragment();
-		private final Fragment mNewsFeedFrag = new NewsFeedFragment();
-		private final Fragment mCollectionsFrag = new CollectionsFragment();
+//		private final Fragment mRecFrag = new RecognitionFragment();
+//		private final Fragment mNewsFeedFrag = new NewsFeedFragment();
+//		private final Fragment mCollectionsFrag = new CollectionsFragment();
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -161,11 +161,11 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 			switch (position)
 			{
 				case 0:
-					return mRecFrag;
+					return new RecognitionFragment();
 				case 1:
-					return mNewsFeedFrag;
+					return new NewsFeedFragment();
 				default:
-					return mCollectionsFrag;
+					return new CollectionsFragment();
 			}
 		}
 
