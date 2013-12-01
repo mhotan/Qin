@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 /**
  * ImageView that presents the target to the user.  Allows the user to select content of the image. 
+ * Also allows the ability to zoom in on the a particular point on the image.
  * 
  * @author Michael Hotan, michael.hotan@gmail.com
  */
@@ -52,6 +53,18 @@ OnMatrixChangedListener, OnPhotoTapListener {
 	 * The Listener that manages touching focal points.
 	 */
 	private final TargetTouchListener mTouchListener;
+	
+	/**
+	 * This Interactable elements that will be focused on.
+	 * 
+	 * Abstract Representation: 
+	 * 	An interactable element that is focused changes the view to draw itself around this element.
+	 * 
+	 * RI:
+	 * 	If mFocusedInteractable is null then there is not focused elements and everything should be drawn.
+	 * 	IF mFocusedInteractable is not null then this interactable is the only thing drawn.
+	 */
+	private Interactable mFocusedInteractable;
 	
 	/**
 	 * Creates a target image view from a resource id.
@@ -94,13 +107,37 @@ OnMatrixChangedListener, OnPhotoTapListener {
 		
 		// Draw all the points as well as register the space that users can select.
 		List<Item> items = mTarget.getItems();
+		
+		// IF we are focused on drawing exactly one target then draw it and exit.
+		if (mFocusedInteractable != null && items.contains(mFocusedInteractable)) {
+			mFocusedInteractable.onDrawSelf(getResources(), canvas);
+			return;
+		}
+		
 		for (Interactable i: items) {
 			i.onDrawSelf(getResources(), canvas);
 			mTouchListener.registerInteractable(i.getBounds(getResources(), canvas), i);
 		}
 	}
 	
+	/**
+	 * Sets the focus point around this interactable.
+	 * 
+	 * @param toFocus Interactable item to focus on.
+	 */
+	public void setFocused(Interactable toFocus) {
+		mFocusedInteractable = toFocus;
+		invalidate();
+	}
 
+	/**
+	 * Clears any focused interactable element.
+	 */
+	public void clearFocus() {
+		mFocusedInteractable = null;
+		invalidate();
+	}
+	
 	@Override
 	public void onPhotoTap(View view, float x, float y) {
 		Log.i(LOG_TAG, "Photo Tapped X: " + x + " Y: " + y);

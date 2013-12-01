@@ -1,6 +1,7 @@
 package org.risa.android.target;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.risa.android.data.Item;
@@ -10,23 +11,21 @@ import org.risa.android.util.FX;
 import org.risa.android.util.ImageSource;
 
 import android.app.Activity;
-import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aqt.qin.R;
@@ -51,6 +50,8 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 	// UI elements
 	//////////////////////////////////////////////////////////////////
 
+	private static final int IMAGE_BORDER_WIDTH = 300;
+	
 	/**
 	 * Name of the item.
 	 */
@@ -60,7 +61,7 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 	 * Container for tall the items
 	 */
 	private LinearLayout mContainer;
-	
+
 	/**
 	 * Button that asks for information about this item.
 	 */
@@ -69,7 +70,7 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 	/**
 	 * Gallery of images that pertain this specific item.
 	 */
-	private Gallery mGallery;
+	private LinearLayout mGallery;
 
 	/**
 	 * Position of this item within the Target
@@ -91,7 +92,7 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 		mWinnersView = (TextView) view.findViewById(R.id.winners_label);
 		mInfoButton = (ImageButton) view.findViewById(R.id.info_button);
 		mDetails = (TextView) view.findViewById(R.id.item_details);
-		mGallery = (Gallery) view.findViewById(R.id.image_gallery);
+		mGallery = (LinearLayout) view.findViewById(R.id.image_gallery);
 		mContainer = (LinearLayout) view.findViewById(R.id.scroll_container);
 		return view;
 	}
@@ -145,20 +146,28 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 		if (images.isEmpty()) {
 			mGallery.setVisibility(View.GONE);
 		} else {
-			ImageAdapter adapter = new ImageAdapter(getActivity(), item.getImages());
-			mGallery.setAdapter(adapter);
+			populateGallery(mGallery, item.getImages());
+//			ImageAdapter adapter = new ImageAdapter(getActivity(), item.getImages());
+//			mGallery.setAdapter(adapter);
 		}
-		
+
 		// Add the vendors
 		List<PurchaseDetails> details = item.getPurchaseDetails();
 		for (PurchaseDetails detail: details) {
 			View vendorView = getVendorView(getActivity(), detail, this);
 			mContainer.addView(vendorView);
 		}
-		
+
 		// Set the onclick listener for details
 		mInfoButton.setOnClickListener(this);
 		mDetails.setVisibility(View.GONE);
+		
+		String detailInformation = item.getDetails();
+		if (detailInformation.isEmpty()) {
+			mInfoButton.setVisibility(View.GONE);
+		} else {
+			mDetails.setText(detailInformation);
+		}
 	}
 
 	/**
@@ -195,6 +204,31 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 	}
 
 	/**
+	 * Populates the gallery with a collection of images.
+	 * 
+	 * @param gallery Gallery to populate with images
+	 * @param images Images to populate gallery with.
+	 */
+	private void populateGallery(LinearLayout gallery, Collection<ImageSource> images) {
+
+		for (ImageSource source : images) {
+			LinearLayout layout = new LinearLayout(getActivity());
+			layout.setLayoutParams(new LinearLayout.LayoutParams(
+					IMAGE_BORDER_WIDTH, IMAGE_BORDER_WIDTH));
+			layout.setGravity(Gravity.CENTER);
+
+			ImageView imageView = new ImageView(getActivity());
+			imageView.setLayoutParams(new LinearLayout.LayoutParams(
+					IMAGE_BORDER_WIDTH-30, IMAGE_BORDER_WIDTH-30));
+			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+			source.loadImage(getActivity(), imageView);
+			layout.addView(imageView);
+			
+			gallery.addView(layout);
+		}
+	}
+
+	/**
 	 * Interface for any parent class to implement to allow backwords communication.
 	 * 
 	 * @author Michael Hotan, michael.hotan@gmail.com
@@ -216,6 +250,7 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 
 		private final Context mContext;
 		private final List<ImageSource> mImages;
+		private final int mGalleryItemBackground;
 
 		/**
 		 * Creates an image adapter for this
@@ -224,7 +259,10 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 		 */
 		public ImageAdapter(Context ctx, List<ImageSource> images) {
 			mContext = ctx;
-			mImages = new ArrayList<ImageSource>(images);
+			mImages = new ArrayList<ImageSource>(images);	
+			TypedArray attr = mContext.obtainStyledAttributes(R.styleable.ItemGallery);
+			mGalleryItemBackground = attr.getResourceId(R.styleable.ItemGallery_android_galleryItemBackground, 0);
+			attr.recycle();
 		}
 
 		@Override
@@ -245,12 +283,12 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView view = new ImageView(mContext);
-			view.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			view.setLayoutParams(new Gallery.LayoutParams(
-					android.widget.Gallery.LayoutParams.MATCH_PARENT, 
-					android.widget.Gallery.LayoutParams.MATCH_PARENT));
+
 			ImageSource source = mImages.get(position);
 			source.loadImage(mContext, view);
+			view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+			view.setLayoutParams(new Gallery.LayoutParams(150, 150));
+			view.setBackgroundResource(mGalleryItemBackground);
 			return view;
 		}
 	}
@@ -262,11 +300,11 @@ public class ItemInformationFragment extends Fragment implements OnClickListener
 			toggleDetails();
 			break;
 		case R.id.vendor_button:
-			
+
 			break;
 		}
 	}
-	
+
 	/**
 	 * Toggles the visibility of the details pane.
 	 */

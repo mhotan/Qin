@@ -142,21 +142,28 @@ TargetImageListener, InformationListener, PanelSlideListener {
 		// image to look at in more detail.  Therefore we have to present them with
 		// the correct view.
 
-		Toast.makeText(this, "Selected " + interactable.toString(), Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "Selected " + interactable.toString(), Toast.LENGTH_SHORT).show();
 
 		// Set the interactable content to display
 		// We can cast to an item because we know that all Targets
 		// interactables are infact items.
-		mInfoFrag.setItemToDisplay((Item)interactable);
+		Item i = (Item)interactable;
+		mInfoFrag.setItemToDisplay(i);
 		showInfoFragment();
-
-		//		mSlideUpPanel.expandPane(EXPANDED_COVERAGE);
+		mImageFrag.setFocused(i);
 	}
 
 	@Override
+	public void onItemSelected(Item item) {
+		mImageFrag.setFocused(item);
+	}
+
+	
+	@Override
 	public void onClearSelected() {
-		Toast.makeText(this, "Clear Selected", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "Clear Selected", Toast.LENGTH_SHORT).show();
 		hideInfoFragment();
+		mImageFrag.clearFocus();
 	}
 
 	@Override
@@ -177,14 +184,9 @@ TargetImageListener, InformationListener, PanelSlideListener {
 
 		// Slide the fragment into the screen.
 		FragmentTransaction ft = mFragManager.beginTransaction();
-		int orientation = getResources().getConfiguration().orientation;
 		
 		// Adjust the animation to the orientation
-//		if (orientation == Configuration.ORIENTATION_PORTRAIT) 
-//			ft.setCustomAnimations(R.anim., R.anim.slide_up);
-//		else if (orientation == Configuration.ORIENTATION_LANDSCAPE)
-			ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_in_left);
-			
+		ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_in_left);
 		ft.show(mInfoFrag);
 		ft.commit();
 	}
@@ -198,13 +200,7 @@ TargetImageListener, InformationListener, PanelSlideListener {
 		// Slide the fragment into the screen.
 		FragmentTransaction ft = mFragManager.beginTransaction();
 
-		// Adjust the animation to the orientation
-		int orientation = getResources().getConfiguration().orientation;
-//		if (orientation == Configuration.ORIENTATION_PORTRAIT) 
-//			ft.setCustomAnimations(R.anim.slide_down, R.anim.slide_down);
-//		else if (orientation == Configuration.ORIENTATION_LANDSCAPE)
-			ft.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_out_right);
-			
+		ft.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_out_right);
 		ft.hide(mInfoFrag);
 		ft.commit();
 	}
@@ -254,5 +250,6 @@ TargetImageListener, InformationListener, PanelSlideListener {
 	public void onPanelSlide(View arg0, float arg1) {
 		// Do nothing as of right now
 	}
+
 
 }

@@ -1,6 +1,7 @@
 package org.risa.android;
 
 import org.risa.android.data.DemoTarget;
+import org.risa.android.data.Target;
 import org.risa.android.util.DemoTargetManager;
 
 import android.app.Activity;
@@ -113,7 +114,7 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 			mResultTextView.setText(String.format("Scan result: %s", uniqueName));
 			mResultTextView.setVisibility(View.VISIBLE);
 			
-			DemoTarget target = DemoTargetManager.getInstance(
+			Target target = DemoTargetManager.getInstance(
 					getActivity().getApplicationContext()).getDemoTarget(uniqueName);
 			if (target != null) {
 				// Notify the activity
@@ -158,7 +159,7 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 		 * 
 		 * @param target Target that was found
 		 */
-		public void onFoundDemoTarget(DemoTarget target);
+		public void onFoundDemoTarget(Target target);
 
 	}
 

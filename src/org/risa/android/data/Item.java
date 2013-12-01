@@ -36,6 +36,11 @@ public abstract class Item implements Interactable {
 	private final List<ImageSource> mImages;
 
 	/**
+	 * Details about this particular event.
+	 */
+	private String mDetails;
+	
+	/**
 	 * Creates an item without any purchase capability or images.
 	 * 
 	 * @param name Name of this item.
@@ -137,11 +142,28 @@ public abstract class Item implements Interactable {
 		return details.get(0);
 	}
 	
+	/**
+	 * SEt the details of this item.
+	 * 
+	 * @param details Details of this item.
+	 */
+	public void setDetails(String details) {
+		mDetails = details;
+	}
+	
+	/**
+	 * @return Empty string when there are no details, details otherwise.
+	 */
+	public String getDetails() {
+		if (mDetails == null) return "";
+		return mDetails;
+	}
+	
 	@Override
 	public abstract void onDrawSelf(Resources res, Canvas canvas);
 
 	@Override
-	public abstract Rect getBounds(Resources res, Canvas canvas) ;
+	public abstract Rect getBounds(Resources res, Canvas canvas);
 	
 	/**
 	 * Used to sort Purchase Details by lowest cost.

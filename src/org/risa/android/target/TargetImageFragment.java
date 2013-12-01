@@ -1,22 +1,18 @@
 package org.risa.android.target;
 
 import org.risa.android.data.Interactable;
+import org.risa.android.data.Item;
 import org.risa.android.data.Target;
 import org.risa.android.target.TargetTouchListener.OnInteractionOccurredListener;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
-import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import android.app.Activity;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.aqt.qin.R;
 
@@ -46,6 +42,8 @@ OnInteractionOccurredListener {
 	 */
 	private PhotoViewAttacher mAttacher;
 	
+	private TargetImageView mImageView;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -72,8 +70,8 @@ OnInteractionOccurredListener {
 		super.onActivityCreated(savedInstanceState);
 		Target target = mListener.getTarget();
 		mImageContainer.removeAllViews();
-		ImageView imgView = new TargetImageView(target, getActivity(), this);
-		mImageContainer.addView(imgView);		
+		mImageView = new TargetImageView(target, getActivity(), this);
+		mImageContainer.addView(mImageView);		
 	}
 
 	/**
@@ -102,5 +100,20 @@ OnInteractionOccurredListener {
 		mListener.onClearSelected();
 	}
 
+	/**
+	 * Sets the focus point around this interactable.
+	 * 
+	 * @param toFocus Interactable item to focus on.
+	 */
+	public void setFocused(Item toFocus) {
+		mImageView.setFocused(toFocus);
+	}
+
+	/**
+	 * Clears any focused interactable element.
+	 */
+	public void clearFocus() {
+		mImageView.clearFocus();
+	}
 
 }

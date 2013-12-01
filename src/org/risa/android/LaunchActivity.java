@@ -3,7 +3,7 @@ package org.risa.android;
 import java.util.Locale;
 
 import org.risa.android.RecognitionFragment.FoundTargetListener;
-import org.risa.android.data.DemoTarget;
+import org.risa.android.data.Target;
 import org.risa.android.target.TargetActivity;
 import org.risa.android.util.Constants;
 
@@ -222,7 +222,7 @@ ActionBar.TabListener, SyncListener, FoundTargetListener {
 	}
 
 	@Override
-	public void onFoundDemoTarget(DemoTarget target) {
+	public void onFoundDemoTarget(Target target) {
 		// Launch the found activity once we identified the target.
 		if (target != null) {
 			Intent i = new Intent(this, TargetActivity.class);

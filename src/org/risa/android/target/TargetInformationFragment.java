@@ -7,6 +7,7 @@ import org.risa.android.data.Interactable;
 import org.risa.android.data.Item;
 import org.risa.android.data.Target;
 import org.risa.android.target.ItemInformationFragment.ItemInteractionListener;
+import org.risa.android.views.ZoomOutPageTransformer;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -84,7 +85,8 @@ OnClickListener, OnPageChangeListener, ItemInteractionListener {
 
 		// TODO Populate the view for 
 		mPager = (ViewPager) view.findViewById(R.id.pager);
-
+		mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+		
 		// Extract the content of the view
 		mLabel = (TextView) view.findViewById(R.id.label_title);
 		mPrevious = (ImageButton) view.findViewById(R.id.button_previous);
@@ -121,8 +123,11 @@ OnClickListener, OnPageChangeListener, ItemInteractionListener {
 		int index = mAdapter.getItemPosition(item);
 		mPager.setCurrentItem(index);
 
-		// Update 
+		// Update The traversal buttons to reflect the correct position
 		updateTraversalButtons(index);
+		
+		// Notify the listener that the item in focus has changed.
+		mListener.onItemSelected(item);
 	}
 
 	/**
@@ -139,7 +144,7 @@ OnClickListener, OnPageChangeListener, ItemInteractionListener {
 		public Target getTarget();
 
 		// TODO Add Call backs for interacting with specific content.
-
+		public void onItemSelected(Item item);
 	}
 
 	/**
@@ -192,6 +197,8 @@ OnClickListener, OnPageChangeListener, ItemInteractionListener {
 	@Override
 	public void onPageSelected(int position) {
 		updateTraversalButtons(position);
+		// Notify the listener that the item in focus has changed.
+		mListener.onItemSelected(mAdapter.get(position));
 	}
 
 	/**

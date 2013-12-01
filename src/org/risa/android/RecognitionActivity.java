@@ -1,6 +1,6 @@
 package org.risa.android;
 
-import org.risa.android.data.DemoTarget;
+import org.risa.android.data.Target;
 import org.risa.android.target.TargetActivity;
 import org.risa.android.util.DemoTargetManager;
 
@@ -92,7 +92,7 @@ public class RecognitionActivity extends Activity implements ScannerSession.List
 			String uniqueName = result.getValue();
 			
 			// If we have already registered a demo target then launch the 
-			DemoTarget target = DemoTargetManager.
+			Target target = DemoTargetManager.
 					getInstance(getApplicationContext()).getDemoTarget(uniqueName);
 			if (target != null) {
 				Intent i = new Intent(this, TargetActivity.class);
