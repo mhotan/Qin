@@ -98,7 +98,7 @@ public class ItemPoint extends Item {
 	 */
 	private Bitmap getImage(Resources res) {
 		if (mImage == null) {
-			mImage = BitmapFactory.decodeResource(res, R.raw.focal_point);
+			mImage = BitmapFactory.decodeResource(res, R.raw.crosshair);
 		}
 		return mImage;
 	}

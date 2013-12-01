@@ -79,13 +79,13 @@ public class DemoTargetManager {
 		if (SCARLLET != null) return SCARLLET;
 
 		// Create the initial target
-		SCARLLET = new DemoTarget("Scarllet wearing Victoria Beckham", "scarllet", res, R.raw.scarllet);
+		SCARLLET = new DemoTarget("Scarlett wearing Victoria Beckham", "scarllet", res, R.raw.scarllet);
 
 		// Add the Dress 
 		Item item = getItem("Victoria Beckham Classic White Dress", SCARLLET.getDimensions(), 295, 242, 499.99f);
 		item.addImage(new ResourceImageLoader(R.raw.dress1));
 		item.addImage(new ResourceImageLoader(R.raw.dress2));
-		item.setDetails("Scarllet showing off Victoria Beckham's sexy white dress in Febuary 2013 UK Elle magazine");
+		item.setDetails("Scarlett showing off Victoria Beckham's sexy white dress in Febuary 2013 UK Elle magazine");
 		SCARLLET.addItem(item);
 
 		// Add the ring 337 358
