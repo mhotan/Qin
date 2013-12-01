@@ -89,7 +89,8 @@ public class RecognitionFragment extends Fragment implements ScannerSession.List
 	public void onDestroy() {
 		super.onDestroy();
 		// close the scanner session
-		mSession.close();
+		if (mSession != null)
+			mSession.close();
 	}
 
 	@Override
