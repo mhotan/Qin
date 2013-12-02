@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="false"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="3dip"
+    android:paddingRight="3dip" >
 
     <LinearLayout
         android:id="@+id/scroll_container"
