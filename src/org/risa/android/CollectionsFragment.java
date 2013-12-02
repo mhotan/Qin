@@ -28,7 +28,6 @@ public class CollectionsFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_collections, container, false);
 	    GridView gridView = (GridView)view.findViewById(R.id.gridview);
-	    gridView.setDrawSelectorOnTop(true);
 	    
 		((GridView) gridView).setAdapter(new CustomGridViewAdapter(getActivity()));
 		
@@ -42,6 +41,10 @@ public class CollectionsFragment extends Fragment {
 			gridView.setNumColumns(2);
 		}
 		
+	    gridView.setDrawSelectorOnTop(true);
+	    gridView.setSelector(R.color.buttonhighlight);
+	    //gridView.setSelector(getResources().getDrawable(R.drawable.selector));
+	    
 	    return view;
 	}
 	
@@ -80,7 +83,7 @@ public class CollectionsFragment extends Fragment {
 	        View v = view;
 	        ImageView picture;
 	        TextView name;
-
+	        
 	        if(v == null) {
 	            v = inflater.inflate(R.layout.collections_item, viewGroup, false);
 	            v.setTag(R.id.picture, v.findViewById(R.id.picture));
@@ -94,10 +97,9 @@ public class CollectionsFragment extends Fragment {
 	        Item item = (Item)getItem(i);
 	        name.setText(item.name);
 	        
-	        picture.setImageResource(item.drawableId);
+	        picture.setImageResource(item.drawableId);	
 	        picture.setBackgroundResource(R.drawable.selector);
 	        
-
 	        return v;
 	    }
 
