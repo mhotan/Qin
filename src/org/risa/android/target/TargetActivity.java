@@ -15,11 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.aqt.qin.R;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
 
 /**
  * This manages the views that present the target to the users.
@@ -29,7 +26,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
  * @author Michael Hotan, michael.hotan@gmail.com
  */
 public class TargetActivity extends FragmentActivity implements 
-TargetImageListener, InformationListener, PanelSlideListener {
+TargetImageListener, InformationListener {
 
 	/**
 	 * Argument key for ID of image.
@@ -230,26 +227,5 @@ TargetImageListener, InformationListener, PanelSlideListener {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-	@Override
-	public void onPanelAnchored(View arg0) {
-		// Do nothing as of right now
-	}
-
-	@Override
-	public void onPanelCollapsed(View arg0) {
-		//		mSlideUpPanel.setSlidingEnabled(false);
-	}
-
-	@Override
-	public void onPanelExpanded(View arg0) {
-		// Do nothing as of right now		
-	}
-
-	@Override
-	public void onPanelSlide(View arg0, float arg1) {
-		// Do nothing as of right now
-	}
-
 
 }
