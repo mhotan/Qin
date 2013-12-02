@@ -41,7 +41,6 @@ public class NewsFeedFragment extends Fragment {
 			gridView.setColumnCount(2);
 		}
 		
-		gridView.setDrawSelectorOnTop(true);
 		gridView.setPadding(margin, 0, margin, 0); // have the margin on the sides as well 
 		
 		String[] imgNames = new String[10]; // Size should match the number of test images
@@ -51,6 +50,9 @@ public class NewsFeedFragment extends Fragment {
 		StaggeredAdapter adapter = new StaggeredAdapter(getActivity(), R.id.image, imgNames);
 		gridView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
+		
+		//gridView.setSelector(getResources().getDrawable(R.drawable.selector));
+		gridView.setDrawSelectorOnTop(true);
 		
 		return gridView;
 	}
